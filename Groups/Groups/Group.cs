@@ -7,24 +7,14 @@ namespace Groups;
 /// Класс, предстваляющий конечные группы
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class Group<T> : IEnumerable<T>
+public class Group<T> : Semigroup<T>
 {
-    private HashSet<T> _set = new HashSet<T>();
+    private string _name = "G";
     public T Id { get; init; }
-
     
-    //public abstract T Mult(T el1);
 
-    public Func<T, T, T> Mult;
-    public Func<T, T, bool> GEquals;
-    public Func<T, T> GetElementCopy;
-
-    public Group(HashSet<T> set, Func<T, T, T> operation, Func<T, T, bool> equals, Func<T, T> copy)
+    public Group(HashSet<T> set, Func<T, T, T> operation, Func<T, T, bool> equals, Func<T, T> copy) : base(set, operation, equals, copy)
     {
-        _set = set;
-        Mult = operation;
-        GEquals = equals;
-        GetElementCopy = copy;
         if(GetIdentity() is null)
             throw new ArgumentException("The given set doesn't form a group under provided operation");
         Id = GetIdentity()!;
@@ -56,57 +46,13 @@ public class Group<T> : IEnumerable<T>
 
     private bool CheckGroup()
     {
-        if(!CheckAssociativity())
-            Console.WriteLine("Assoc");
+        // if(!CheckAssociativity())
+        //     Console.WriteLine("Assoc");
         
-        if(!CheckClosure())
-            Console.WriteLine("Closure");
+        // if(!CheckClosure())
+        //     Console.WriteLine("Closure");
         
-        if(GetIdentity() is null)
-            Console.WriteLine("Identity");
-        
-        if(!CheckInverses())
-            Console.WriteLine("Inverses");
-        
-        return CheckAssociativity() && CheckClosure() && CheckInverses();
-    }
-    
-    //Мегапроверка
-    private bool CheckAssociativity()
-    {
-
-        foreach(T a in _set)
-            foreach(T b in _set)
-                foreach(T c in _set)
-                    if (!GEquals(Mult(Mult(a, b), c), Mult(a, Mult(b, c))))
-                    {
-                        Console.WriteLine($"Not associative: ({a} * {b}) * {c} != {a} * ({b} * {c})");
-                        return false;
-                    }
-
-        
-        
-        return true;
-    }
-
-    private bool CheckClosure()
-    {
-        foreach (T a in _set)
-        {
-            foreach (T b in _set)
-            {
-                // Проблема: Contains не сработает, нужно переопределять Equals, GetHashCode
-                if (!_set.Contains(Mult(a, b)))
-                {
-                    Console.WriteLine($"Not closed under operation: {Mult(a, b)} is not in the set");
-                    return false;
-                }
-
-                
-            }
-        }
-
-        return true;
+        return CheckInverses();
     }
 
     private bool CheckIdentity(T a)
@@ -120,10 +66,12 @@ public class Group<T> : IEnumerable<T>
     private T? GetIdentity()
     {
         // Возможно стоит добавить проверку на единственность нейтрального элемента
-        foreach(T x in _set)
+        foreach (T x in _set)
+        {
             if (CheckIdentity(x))
                 return x;
-        
+        }
+
         Console.WriteLine("No identity element!");
         return default;
     }
@@ -139,13 +87,11 @@ public class Group<T> : IEnumerable<T>
                     flag = true;
                     break;
                 }
-
             if (!flag)
             {
                 Console.WriteLine($"Doesn't contain an inverse for {x}");
                 return false;
             }
-            
         }
         return true;
     }
@@ -173,26 +119,18 @@ public class Group<T> : IEnumerable<T>
         return order;
     }
 
-    public int GetOrder() => _set.Count;
+    public int GetGroupOrder() => _set.Count;
 
-
-    public IEnumerator<T> GetEnumerator()
-    {
-        return _set.GetEnumerator();
-    }
-
+    public void SetName(string name) => _name = name;
+    
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append("Group (G, *):\n" +
-                  "G = {\n  ");
+        sb.Append($"Group ({_name}, *):\n" +
+                  $"{_name} = {{\n  ");
         sb.Append(String.Join(",\n  ", _set));
         sb.Append("\n}");
         return sb.ToString();
     }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
+    
 }
