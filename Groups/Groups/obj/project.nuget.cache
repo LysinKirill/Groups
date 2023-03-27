@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "W9EEyo1qY5LFbzc1TOvTCLNBQdbP8x00DBHtAgo4s6VA0Ac5aIhUzvI1owyuLxeM5eky1GgczZFTRVSi6u1nNA==",
+  "dgSpecHash": "xReap+2BZ7YbrGb39Sc6sJ+AHOrz7Al7RXGHcKYKi1xUhZ2x1pQEUSqm4QrNcMnVlzZgPnSl9utXrvpgFqpQ4A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Kirill\\RiderProjects\\Groups\\Groups\\Groups.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Xiaomi\\Desktop\\Groups\\Groups-main\\Groups\\Groups\\Groups.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Xiaomi\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.14\\microsoft.netcore.app.ref.6.0.14.nupkg.sha512",
+    "C:\\Users\\Xiaomi\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.14\\microsoft.windowsdesktop.app.ref.6.0.14.nupkg.sha512",
+    "C:\\Users\\Xiaomi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.14\\microsoft.aspnetcore.app.ref.6.0.14.nupkg.sha512",
+    "C:\\Users\\Xiaomi\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.14\\microsoft.netcore.app.host.win-x64.6.0.14.nupkg.sha512"
+  ],
   "logs": []
 }

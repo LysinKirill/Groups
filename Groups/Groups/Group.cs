@@ -22,26 +22,39 @@ public class Group<T> : Semigroup<T>
             throw new ArgumentException("The given set doesn't form a group under provided operation");
     }
 
+    /*
+    public static int Pow(int a, int n)
+    {
+        if (n == 0)
+            return a == 0 ? throw new ArgumentException("Cannot raise zero to the power of zero.") : 1;
+        if (n < 0)
+            throw new ArgumentException("This implementation of power only takes non-negative second argument");
+        if (n % 2 == 0)
+        {
+            int t = Pow(a, n / 2);
+            return t * t;
+        }
+        return a * Pow(a, n - 1);
+    }
 
+    */
+    
     public T Pow(T el, int power)
     {
         T a = GetElementCopy(el);
+        if (power < 0)
+            return Pow(Inverse(a), -power);
         
         if(power == 0)
             return Id;
-        if (power < 0)
-        {
-            a = Inverse(a);
-            power *= -1;
-        }
-        
-        T x = GetElementCopy(a);
-        for (int i = 1; i < power; i++)
-        {
-            x = Mult(x, a);
-        }
 
-        return x;
+        if (power % 2 == 0)
+        {
+            T t = Pow(a, power / 2);
+            return Mult(t, t);
+        }
+        return Mult(Pow(a, power - 1), a);
+
     }
 
     private bool CheckGroup()
