@@ -9,15 +9,13 @@ class Program
             Dihedral.D(3).ToHashSet(),
             (a, b) => a * b,
             (a, b) => a == b,
-            a => a.Copy()
-        );
+            a => a.Copy());
         
         Group<Dihedral.DihedralEl> D4 = new Group<Dihedral.DihedralEl>(
             Dihedral.D(4).ToHashSet(),
             (a, b) => a * b,
             (a, b) => a == b,
-            a => a.Copy()
-        );
+            a => a.Copy());
 
         
         Group<Permutation> S4 = new Group<Permutation>(
@@ -25,6 +23,15 @@ class Program
             (a, b) => a * b, 
              (a, b) => a == b, 
              (a) => a.Copy());
+        
+        // Если вы хотите работать с симметрическими группами порядка более 5, то обязательно последним аргументом указывайте false тогда программа не будет проверять
+        // все условия группы (и, соответственно, будет работать значительно быстрее), но Sn всегда является группой
+        Group<Permutation> S8 = new Group<Permutation>(
+            Permutation.S(8).ToHashSet(), 
+            (a, b) => a * b, 
+            (a, b) => a == b, 
+            (a) => a.Copy(),
+            false);
         
         
         Group<int> Z4 = new Group<int>(
@@ -58,10 +65,12 @@ class Program
         
         // В качестве параметров передайте созданные ранее группы
         // Пример для D3 × D4 × Z4
-        MultiGroup<Dihedral.DihedralEl, Dihedral.DihedralEl, int> 
-            multiGroup = new MultiGroup<Dihedral.DihedralEl, Dihedral.DihedralEl, int>(D3, D4, Z4);
+        //MultiGroup<Permutation, Permutation, int> 
+        //    multiGroup = new MultiGroup<Permutation, Permutation, int>(S3, S4, Z4);
         
         // Укажите порядок элемента, который вы ищете
+        
+        /*
         const int order = 6;
         
         int counter = 0;
@@ -76,5 +85,9 @@ class Program
         }
         Console.WriteLine("____________________");
         Console.WriteLine(counter);
+        */
+        
+        foreach(var x in S8.CountOrders())
+            Console.WriteLine($"ord = {x.Key}; count = {x.Value}");
     }
 }

@@ -13,13 +13,16 @@ public class Semigroup<T> : IEnumerable<T>
     public Func<T, T, bool> GEquals;
     public Func<T, T> GetElementCopy;
 
-    public Semigroup(HashSet<T> set, Func<T, T, T> operation, Func<T, T, bool> equals, Func<T, T> copy)
+    public Semigroup(HashSet<T> set, Func<T, T, T> operation, Func<T, T, bool> equals, Func<T, T> copy, bool validate = true)
     {
         _set = set;
         Mult = operation;
         GEquals = equals;
         GetElementCopy = copy;
-        if (!CheckSemigroup())
+        // !!!При передаче false последним аргументом программа не проверяет на корректность переданные аргументы, могут возникнуть ошибки
+        // !!!Передавайте false в качестве последнего аргумента только в том случае, если вы уверены, что данное множество и операция образуют полугруппу
+        // При передаче false последним аргументом программа может работать значительно быстрее, т.к. не происходит многочисленных вычислений для множеств с большим количеством элементов
+        if (validate && !CheckSemigroup())
             throw new ArgumentException("The given set doesn't form a semigroup under provided operation");
     }
     

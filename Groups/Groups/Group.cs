@@ -13,13 +13,23 @@ public class Group<T> : Semigroup<T>
     public T Id { get; init; }
     
 
-    public Group(HashSet<T> set, Func<T, T, T> operation, Func<T, T, bool> equals, Func<T, T> copy) : base(set, operation, equals, copy)
+    public Group(HashSet<T> set, Func<T, T, T> operation, Func<T, T, bool> equals, Func<T, T> copy, bool validate = true) : base(set, operation, equals, copy, validate)
     {
-        if(GetIdentity() is null)
-            throw new ArgumentException("The given set doesn't form a group under provided operation");
-        Id = GetIdentity()!;
-        if (!CheckGroup())
-            throw new ArgumentException("The given set doesn't form a group under provided operation");
+        if (validate)
+        {
+            if (GetIdentity() is null)
+                throw new ArgumentException("The given set doesn't form a group under provided operation");
+            Id = GetIdentity()!;
+            if (!CheckGroup())
+                throw new ArgumentException("The given set doesn't form a group under provided operation");
+        }
+        // !!!При передаче false последним аргументом программа не проверяет на корректность переданные аргументы, могут возникнуть ошибки
+        // !!!Передавайте false в качестве последнего аргумента только в том случае, если вы уверены, что данное множество и операция образуют полугруппу
+        // При передаче false последним аргументом программа может работать значительно быстрее, т.к. не происходит многочисленных вычислений для множеств с большим количеством элементов
+        else
+        {
+            Id = GetIdentity()!;
+        }
     }
 
     /*
@@ -145,5 +155,18 @@ public class Group<T> : Semigroup<T>
         sb.Append("\n}");
         return sb.ToString();
     }
-    
+
+    public Dictionary<int, int> CountOrders()
+    {
+        Dictionary<int, int> orders = new Dictionary<int, int>();
+        foreach (var el in _set)
+        {
+            int ord = GetElementOrder(el);
+            if (!orders.ContainsKey(ord))
+                orders[ord] = 0;
+            orders[ord]++;
+        }
+
+        return orders;
+    }
 }
