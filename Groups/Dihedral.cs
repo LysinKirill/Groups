@@ -85,9 +85,8 @@ public static class Dihedral
 
         public override string ToString()
         {
-            if (IsRotation)
-                return $"Rotation by {((2 * 180 * K / N)):f2}°";
-            return $"Symmetry relative to the {K} axis";
+            //return IsRotation ? $"Rotation by {((2 * 180 * K / N)):f2}°" : $"Symmetry relative to the {K} axis";
+            return IsRotation ? $"Rot {((2 * 180 * K / N)):f2}°" : $"Sym {K}";
         }
     }
 }

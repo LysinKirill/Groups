@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text;
 
 namespace Groups;
 
@@ -41,5 +42,17 @@ public class MultiGroup<T1, T2, T3> : IEnumerable<(T1, T2, T3)>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (var x in this)
+        {
+            sb.Append(string.Join(",\t", x));
+            sb.Append("\n");
+        }
+
+        return sb.ToString();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Text;
 
+
 namespace Groups;
 
 public class Semigroup<T> : IEnumerable<T>
@@ -94,5 +95,56 @@ public class Semigroup<T> : IEnumerable<T>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public void ShowCayleyTable(Func<T, string>? func = null)
+    {
+        if (func is null)
+            func = (x) => x.ToString();
+        
+        int maxLength = -1;
+        string[][] lines = new string[_set.Count][];
+        List<T> list = _set.ToList();
+        for (int i = 0; i < lines.Length; i++)
+        {
+            lines[i] = new string[_set.Count];
+            for (int j = 0; j < lines[0].Length; j++)
+            {
+                lines[i][j] = func(AddFunc(list[i], list[j]));
+                maxLength = lines[i][j].Length > maxLength ? lines[i][j].Length : maxLength;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.Append(new string(' ', maxLength + 1));
+        sb.Append("|");
+        for (int i = 0; i < lines.Length; i++)
+        {
+            sb.Append("| " + (func(list[i])).PadRight(maxLength) + " ");
+        }
+        sb.Append("\n");
+        sb.Append(new string('_', (maxLength + 3) * (lines[0].Length + 1)));
+        sb.Append("\n");
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            sb.Append(func(list[i]).PadRight(maxLength) + " |");
+            for (int j = 0; j < lines[0].Length; j++)
+            {
+                sb.Append("| " + (lines[i][j]).PadRight(maxLength) + " ");
+            }
+            
+            sb.Append(i != lines.Length - 1 ? "\n" + new string(' ', maxLength + 1) + "||" : "");
+            if (i != lines.Length - 1)
+            {
+                for (int j = 0; j < lines[0].Length - 1; j++)
+                {
+                    sb.Append(new string(' ', maxLength + 2) + "|");
+                }
+
+                sb.Append("\n");
+            }
+        }
+        Console.WriteLine(sb);
     }
 }

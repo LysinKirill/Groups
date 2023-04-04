@@ -277,6 +277,7 @@ public class Permutation
         return "Permutation(" + String.Join(" ", _arr) + ")";
     }
 
+    public static string Compact(Permutation p) => "(" + String.Join(" ", p._arr) + ")";
     public int GetLength() => _arr.Length;
 
 

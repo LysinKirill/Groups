@@ -11,6 +11,12 @@ class Program
             (a, b) => a == b,
             a => a.Copy());
         
+        Group<Dihedral.DihedralEl> D4 = new Group<Dihedral.DihedralEl>(
+            Dihedral.D(4).ToHashSet(),
+            (a, b) => a * b,
+            (a, b) => a == b,
+            a => a.Copy());
+        
         Group<Dihedral.DihedralEl> D5 = new Group<Dihedral.DihedralEl>(
             Dihedral.D(5).ToHashSet(),
             (a, b) => a * b,
@@ -18,11 +24,18 @@ class Program
             a => a.Copy());
 
         
-        Group<Permutation> S3 = new Group<Permutation>(
-            Permutation.S(3).ToHashSet(), 
+        Group<Permutation> S4 = new Group<Permutation>(
+            Permutation.S(4).ToHashSet(), 
             (a, b) => a * b, 
              (a, b) => a == b, 
              (a) => a.Copy());
+        
+        Group<Permutation> S3 = new Group<Permutation>(
+            Permutation.S(3).ToHashSet(), 
+            (a, b) => a * b, 
+            (a, b) => a == b, 
+            (a) => a.Copy());
+
         
         // Если вы хотите работать с симметрическими группами порядка более 5, то обязательно последним аргументом указывайте false тогда программа не будет проверять
         // все условия группы (и, соответственно, будет работать значительно быстрее), но Sn всегда является группой
@@ -70,28 +83,50 @@ class Program
         // Zn - int
         
         // В качестве параметров передайте созданные ранее группы
-        MultiGroup<Dihedral.DihedralEl, Permutation, int> 
-            multiGroup = new MultiGroup<Dihedral.DihedralEl, Permutation, int>(D5, S3, Z4);
+        Group<int> Z1 = new Group<int>(
+            new HashSet<int>(){0},
+            (a, b) => a,
+            (a, b) => a == b,
+            a => a
+        );
+        
+        MultiGroup<Dihedral.DihedralEl, Permutation, int>
+            multiGroup = new MultiGroup<Dihedral.DihedralEl, Permutation, int>(D3, S3, Z4);
+        
+        // Console.WriteLine("Группа D3");
+        // foreach(var x in D3.CountOrders())
+        //     Console.WriteLine($"ord = {x.Key}: count = {x.Value}");
+        //
+        // Console.WriteLine("\nГруппа S3");
+        // foreach(var x in S3.CountOrders())
+        //     Console.WriteLine($"ord = {x.Key}: count = {x.Value}");
+        //
+        // Console.WriteLine("\nГруппа Z4");
+        // foreach(var x in Z4.CountOrders())
+        //     Console.WriteLine($"ord = {x.Key}: count = {x.Value}");
+        
         
         // Укажите порядок элемента, который вы ищете
         
+        //
+        // const int order = 6;
+        //
+        // int counter = 0;
+        // foreach (var x in multiGroup)
+        // {
+        //     //Console.WriteLine(x);
+        //     //Console.WriteLine(multiGroup.GetElementOrder(x));
+        //     if (multiGroup.GetElementOrder(x) == order)
+        //     {
+        //         counter++; 
+        //         // Вывод элементов указанного порядка. Можно закомментировать
+        //         Console.WriteLine(x);
+        //     }
+        // }
+        // Console.WriteLine("____________________");
+        // Console.WriteLine(counter);
         
-        const int order = 2;
-        
-        int counter = 0;
-        foreach (var x in multiGroup)
-        {
-            if (multiGroup.GetElementOrder(x) == order)
-            {
-                counter++;
-                // Вывод элементов указанного порядка. Можно закомментировать
-                Console.WriteLine(x);
-            }
-        }
-        Console.WriteLine("____________________");
-        Console.WriteLine(counter);
-        
-        
-        
+        D4.ShowCayleyTable();
+        Console.ReadLine();
     }
 }
